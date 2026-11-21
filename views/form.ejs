@@ -1,0 +1,10 @@
+<%- include('_head') %>
+<h1><%= g.id ? 'Modifier' : 'Nouveau' %> guide</h1>
+<form class="stack" method="post" action="<%= g.id ? '/edit/'+g.id : '/new' %>">
+<input name="title" placeholder="Titre" required value="<%= g.title||'' %>">
+<select name="category_id"><option value="">Sans catégorie</option>
+<% cats.forEach(c=>{ %><option value="<%= c.id %>" <%= g.category_id==c.id?'selected':'' %>><%= c.name %></option><% }) %></select>
+<textarea name="intro" rows="3" placeholder="Introduction"><%= g.intro||'' %></textarea>
+<textarea name="steps" rows="12" placeholder="Une étape par ligne"><%= g.steps||'' %></textarea>
+<button>Enregistrer</button></form>
+<%- include('_foot') %>

@@ -1,0 +1,10 @@
+<%- include('_head') %>
+<form method="get" style="display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap">
+<input name="s" placeholder="Rechercher un guide…" value="<%= s||'' %>" style="flex:1">
+<select name="cat"><option value="">Toutes catégories</option>
+<% cats.forEach(c=>{ %><option value="<%= c.id %>" <%= cat==c.id?'selected':'' %>><%= c.name %></option><% }) %></select><button>OK</button></form>
+<% if(!guides.length){ %><p class="mut">Aucun guide pour le moment.</p><% } %>
+<% guides.forEach(g=>{ %><div class="card"><h2 style="margin:0"><a href="/guide/<%= g.id %>"><%= g.title %></a></h2>
+<span class="tag"><%= g.cat||'Sans catégorie' %></span> <span class="mut">par <%= g.author %> · <%= g.created_at.toLocaleDateString('fr-FR') %></span>
+<p><%= g.intro %></p></div><% }) %>
+<%- include('_foot') %>

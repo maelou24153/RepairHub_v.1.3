@@ -1,0 +1,14 @@
+<%- include('_head') %><h1>Administration</h1>
+<% if (user.role==='admin') { %><div class="card"><h2>Catégories</h2>
+<form method="post" action="/admin/category" style="display:flex;gap:.5rem"><input name="name" placeholder="Nouvelle catégorie" required><button>Ajouter</button></form>
+<p><% cats.forEach(c=>{ %><form class="inline" method="post" action="/admin/category/<%= c.id %>/delete"><span class="tag"><%= c.name %> <button class="red" style="padding:0 .4rem">×</button></span></form> <% }) %></p></div><% } %>
+<div class="card" style="overflow-x:auto"><h2>Utilisateurs (<%= users.length %>)</h2><table><tr><th>Pseudo</th><th>Email</th><th>Rôle</th><th>Suspendu</th><th></th></tr>
+<% users.forEach(u=>{ %><tr><td><%= u.name %></td><td><%= u.email %></td>
+<% if (user.role==='admin' && u.id!==user.id) { %>
+<form method="post" action="/admin/user/<%= u.id %>"><td><select name="role"><% ['reader','creator','moderator','admin'].forEach(r=>{ %><option <%= u.role===r?'selected':'' %>><%= r %></option><% }) %></select></td>
+<td><input type="checkbox" name="banned" <%= u.banned?'checked':'' %>></td><td><button>OK</button></td></form>
+<% } else { %><td><%= u.role %></td><td><%= u.banned?'oui':'non' %></td>
+<td><% if (user.role==='moderator' && u.role==='reader') { %><form class="inline" method="post" action="/admin/user/<%= u.id %>/ban"><button class="sec"><%= u.banned?'Réactiver':'Suspendre' %></button></form><% } %></td><% } %></tr><% }) %></table></div>
+<div class="card"><h2>Derniers commentaires</h2><% comments.forEach(c=>{ %><p><b><%= c.name %></b> : <%= c.body.slice(0,120) %>
+<a href="/guide/<%= c.guide_id %>">voir</a> <form class="inline" method="post" action="/comment/<%= c.id %>/delete"><button class="red">Supprimer</button></form></p><% }) %></div>
+<%- include('_foot') %>

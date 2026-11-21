@@ -1,0 +1,14 @@
+<%- include('_head') %>
+<h1><%= g.title %></h1><span class="tag"><%= g.cat||'Sans catégorie' %></span> <span class="mut">par <%= g.author %></span>
+<p><%= g.intro %></p>
+<% if (user && (user.role==='admin' || (user.role==='creator' && user.id===g.author_id))) { %><a href="/edit/<%= g.id %>">Modifier</a><% } %>
+<% if (user && (['admin','moderator'].includes(user.role) || (user.role==='creator' && user.id===g.author_id))) { %>
+<form class="inline" method="post" action="/delete/<%= g.id %>" onsubmit="return confirm('Supprimer ce guide ?')"><button class="red">Supprimer</button></form><% } %>
+<div class="card" style="counter-reset:s"><% (g.steps||'').split('\n').filter(x=>x.trim()).forEach(s=>{ %><div class="step"><%= s %></div><% }) %></div>
+<h2>Commentaires (<%= comments.length %>)</h2>
+<% comments.forEach(c=>{ %><div class="card"><b><%= c.name %></b> <span class="mut"><%= c.created_at.toLocaleString('fr-FR') %></span>
+<% if (user && ['admin','moderator'].includes(user.role)) { %><form class="inline" method="post" action="/comment/<%= c.id %>/delete"><button class="red">Supprimer</button></form><% } %>
+<p style="white-space:pre-wrap"><%= c.body %></p></div><% }) %>
+<% if (user) { %><form class="stack" method="post" action="/guide/<%= g.id %>/comment"><textarea name="body" rows="3" maxlength="2000" required placeholder="Votre commentaire"></textarea><button>Publier</button></form>
+<% } else { %><p><a href="/login">Connectez-vous</a> ou <a href="/register">créez un compte</a> pour commenter.</p><% } %>
+<%- include('_foot') %>

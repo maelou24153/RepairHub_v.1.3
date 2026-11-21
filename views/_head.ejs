@@ -1,0 +1,9 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RepairHub</title><link rel="stylesheet" href="/style.css"></head><body>
+<header><a class="logo" href="/">🔧 RepairHub</a>
+<% if (user) { %><span class="mut"><%= user.name %> (<%= user.role %>)</span>
+<% if (['creator','admin'].includes(user.role)) { %><a href="/new">+ Nouveau guide</a><% } %>
+<% if (['admin','moderator'].includes(user.role)) { %><a href="/admin">Administration</a><% } %>
+<form class="inline" method="post" action="/logout"><button class="sec">Déconnexion</button></form>
+<% } else { %><a href="/login">Connexion</a><a href="/register">Créer un compte</a><% } %></header><main>
+<% if (msg) { %><div class="msg"><%= msg %></div><% } %>
